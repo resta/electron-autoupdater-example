@@ -39,7 +39,7 @@ export default {
       if (status === 'checking-for-update') {
         this.status = 'checking for update ...'
       } else if (status === 'update-available') {
-        this.status = 'update available'
+        this.status = `update available: v${data.version}`
         this.action = 'download'
       } else if (status === 'update-not-available') {
         this.status = 'you are using latest version'
