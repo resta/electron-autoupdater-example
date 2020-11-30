@@ -48,6 +48,8 @@ export default {
         this.actiontext = 'download update'
       } else if (status === 'update-not-available') {
         this.status = 'you are using latest version'
+        this.action = 'check'
+        this.actiontext = 'check again'
       } else if (status === 'error') {
         this.status = `update error`
       } else if (status === 'download-progress') {
@@ -64,9 +66,11 @@ export default {
       window.electron.checkforupdates()
     },
     doaction () {
-      if (this.action === 'download') {
+      if (this.action === 'check') {
+        this.checkforupdates()
+      } else if (this.action === 'download') {
         window.electron.downloadupdate()
-      } else if (this.action === 'quit and install') {
+      } else if (this.action === 'quitandinstall') {
         window.electron.quitandinstallupdate()
       }
 
