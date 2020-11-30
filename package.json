@@ -4,7 +4,8 @@
   "scripts": {
     "start-main": "./node_modules/electron/cli.js ./app",
     "start-renderer": "poi -s",
-    "build": "rm -rf ./dist && poi --prod && mv ./app/renderer/fonts ./app/renderer/assets/css && node ./node_modules/electron-builder/out/cli/cli.js --macos"
+    "build": "rm -rf ./dist && poi --prod && mv ./app/renderer/fonts ./app/renderer/assets/css && node ./node_modules/electron-builder/out/cli/cli.js --macos",
+    "release": "yarn run build -p always"
   },
   "devDependencies": {
     "electron": "^10.1.3",
