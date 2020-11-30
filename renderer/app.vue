@@ -1,9 +1,10 @@
 <template lang="html">
   <div class="container">
-    <div class="">
+    <div class="logo"></div>
+    <div>
       <h1>{{ app.name }}</h1>
     </div>
-    <div class="">
+    <div>
       vestion: <code>{{ app.version }}</code>
     </div>
   </div>
@@ -43,6 +44,17 @@ export default {
 
   justify-content: center;
   align-items: center;
+
+  .logo {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+
+    background-image: url('./assets/images/electron-logo.png');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
 }
 
 </style>

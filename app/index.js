@@ -47,7 +47,7 @@ const createmainwindow = async () => {
 
     sendstatustowindow('window shown')
 
-    autoUpdater.checkForUpdatesAndNotify()
+    if (!is.development) autoUpdater.checkForUpdatesAndNotify()
   })
 
   win.on('closed', () => {
