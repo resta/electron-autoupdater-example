@@ -69,8 +69,10 @@ export default {
       if (this.action === 'check') {
         this.checkforupdates()
       } else if (this.action === 'download') {
+        this.status = 'preparing download...'
         window.electron.downloadupdate()
       } else if (this.action === 'quitandinstall') {
+        this.status = 'installing update...'
         window.electron.quitandinstallupdate()
       }
 
