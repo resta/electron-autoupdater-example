@@ -13,6 +13,8 @@ debug({ showDevTools: true, devToolsMode: 'undocked' })
 
 app.setAppUserModelId('com.examples.electronautoupdaterexample')
 
+autoUpdater.autoDownload = false
+
 // if (!is.development) {
 //   // const FOUR_HOURS = 1000 * 60 * 60 * 4;
 //   // setInterval(() => autoUpdater.checkForUpdates(), FOUR_HOURS)
@@ -36,18 +38,15 @@ const createmainwindow = async () => {
     }
   })
 
-  const sendstatustowindow = text => {
-    console.log(text)
-
-    win.webContents.send('message', text)
-  }
+  const sendstatustowindow = (status, data) => win.webContents.send('status', { status, data })
 
   win.on('ready-to-show', () => {
     win.show()
 
-    sendstatustowindow('window shown')
-
-    if (!is.development) autoUpdater.checkForUpdatesAndNotify()
+    // if (!is.development) {
+    //   autoUpdater.autoDownload = false
+    //   autoUpdater.checkForUpdates()
+    // }
   })
 
   win.on('closed', () => {
@@ -67,30 +66,12 @@ const createmainwindow = async () => {
 
   // auto-updater
 
-  autoUpdater.on('checking-for-update', () => {
-    sendstatustowindow('checking for update...')
-  })
-  autoUpdater.on('update-available', info => {
-    console.log(info)
-
-    sendstatustowindow('update available')
-  })
-  autoUpdater.on('update-not-available', info => {
-    console.log(info)
-
-    sendstatustowindow('update not available')
-  })
-  autoUpdater.on('error', err => {
-    sendstatustowindow('update errored: ' + err)
-  })
-  autoUpdater.on('download-progress', progress => {
-    sendstatustowindow(`download speed: ${progress.bytesPerSecond} - downloaded ${progress.precent}% (${progress.transfered}/${progress.total})`)
-  })
-  autoUpdater.on('update-downloaded', info => {
-    console.log(info)
-
-    sendstatustowindow('update downloaded')
-  })
+  autoUpdater.on('checking-for-update', () => sendstatustowindow('checking-for-update'))
+  autoUpdater.on('update-available', info => sendstatustowindow('update-available', info))
+  autoUpdater.on('update-not-available', info => sendstatustowindow('update-not-available', info))
+  autoUpdater.on('error', err => sendstatustowindow('error', err))
+  autoUpdater.on('download-progress', progress => sendstatustowindow('download-progress', progress))
+  autoUpdater.on('update-downloaded', info => sendstatustowindow('update-downloaded', info))
 
   return win
 }

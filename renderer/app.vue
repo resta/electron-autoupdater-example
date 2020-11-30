@@ -7,6 +7,11 @@
     <div>
       vestion: <code>{{ app.version }}</code>
     </div>
+    <div>
+      <a v-if="!status" href="#" @click.prevent="checkforupdates()">check for updates</a>
+      <span v-else>{{ status }}</span>
+      <span v-if="action" @click.prevent="doaction()">{{ action }}</span>
+    </div>
   </div>
 </template>
 
@@ -17,7 +22,9 @@ export default {
       app: {
         name: '',
         version: ''
-      }
+      },
+      status: '',
+      action: ''
     }
   },
   async created () {
@@ -26,9 +33,39 @@ export default {
     this.app.name = name
     this.app.version = version
 
-    window.electron.onmessage(msg => {
-      console.log(msg)
+    window.electron.onmessage(({ status, data }) => {
+      console.log(status, data)
+
+      if (status === 'checking-for-update') {
+        this.status = 'checking for update ...'
+      } else if (status === 'update-available') {
+        this.status = 'update available'
+        this.action = 'download'
+      } else if (status === 'update-not-available') {
+        this.status = 'you are using latest version'
+      } else if (status === 'error') {
+        this.status = `update error`
+      } else if (status === 'download-progress') {
+        this.status = `downloading update: ${data.percent}%`
+      } else if (status === 'update-downloaded') {
+        this.status = `update downloaded`
+        this.action = 'quitandinstall'
+      }
     })
+  },
+  methods: {
+    checkforupdates () {
+      window.electron.checkforupdates()
+    },
+    doaction () {
+      if (this.action === 'download') {
+        window.electron.downloadupdate()
+      } else if (this.action === 'quitandinstall') {
+        window.electron.quitandinstallupdate()
+      }
+
+      this.action = ''
+    }
   }
 }
 </script>
