@@ -14,10 +14,10 @@ debug({ showDevTools: true, devToolsMode: 'undocked' })
 app.setAppUserModelId('com.examples.electronautoupdaterexample')
 
 if (!is.development) {
-	// const FOUR_HOURS = 1000 * 60 * 60 * 4;
+  // const FOUR_HOURS = 1000 * 60 * 60 * 4;
   // setInterval(() => autoUpdater.checkForUpdates(), FOUR_HOURS)
 
-	autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdates()
 }
 
 let mainwindow
