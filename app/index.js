@@ -15,13 +15,6 @@ app.setAppUserModelId('com.examples.electronautoupdaterexample')
 
 autoUpdater.autoDownload = false
 
-// if (!is.development) {
-//   // const FOUR_HOURS = 1000 * 60 * 60 * 4;
-//   // setInterval(() => autoUpdater.checkForUpdates(), FOUR_HOURS)
-//
-//   autoUpdater.checkForUpdatesAndNotify()
-// }
-
 let mainwindow
 
 const createmainwindow = async () => {
@@ -40,18 +33,9 @@ const createmainwindow = async () => {
 
   const sendstatustowindow = (status, data) => win.webContents.send('status', { status, data })
 
-  win.on('ready-to-show', () => {
-    win.show()
+  win.on('ready-to-show', () => win.show())
 
-    // if (!is.development) {
-    //   autoUpdater.autoDownload = false
-    //   autoUpdater.checkForUpdates()
-    // }
-  })
-
-  win.on('closed', () => {
-    mainwindow = undefined
-  })
+  win.on('closed', () => mainwindow = undefined)
 
   if (is.development) {
     win.webContents.on('did-finish-load', () => win.webContents.setVisualZoomLevelLimits(1, 3))

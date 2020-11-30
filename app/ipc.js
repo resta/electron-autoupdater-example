@@ -1,4 +1,4 @@
-const { ipcMain: ipc, app } = require('electron')
+const { ipcMain: ipc } = require('electron')
 const { autoUpdater } = require('electron-updater')
 
 const pckg = require('./package.json')
