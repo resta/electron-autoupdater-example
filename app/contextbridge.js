@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld(
     getappinfo: () => ipc.invoke('getappinfo'),
     onmessage: cb => ipc.on('status', (e, obj) => cb(obj)),
     checkforupdates: () => ipc.invoke('checkforupdates'),
-    downloadupdate: () => ipc.invoke('downloadupdate')
+    downloadupdate: () => ipc.invoke('downloadupdate'),
+    quitandinstallupdate: () => ipc.invoke('quitandinstallupdate')
   }
 )

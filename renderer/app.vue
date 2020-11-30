@@ -10,7 +10,10 @@
     <div>
       <a v-if="!status" href="#" @click.prevent="checkforupdates()">check for updates</a>
       <span v-else>{{ status }}</span>
-      <span v-if="action" @click.prevent="doaction()">{{ action }}</span>
+      <span v-if="action">
+        |
+        <a href="#" @click.prevent="doaction()">{{ actiontext }}</a>
+      </span>
     </div>
   </div>
 </template>
@@ -24,7 +27,8 @@ export default {
         version: ''
       },
       status: '',
-      action: ''
+      action: '',
+      actiontext: ''
     }
   },
   async created () {
@@ -41,15 +45,17 @@ export default {
       } else if (status === 'update-available') {
         this.status = `update available: v${data.version}`
         this.action = 'download'
+        this.actiontext = 'download update'
       } else if (status === 'update-not-available') {
         this.status = 'you are using latest version'
       } else if (status === 'error') {
         this.status = `update error`
       } else if (status === 'download-progress') {
-        this.status = `downloading update: ${data.percent}%`
+        this.status = `downloading update: ${Math.round(data.percent)}%`
       } else if (status === 'update-downloaded') {
         this.status = `update downloaded`
         this.action = 'quitandinstall'
+        this.actiontext = 'quit and install'
       }
     })
   },
@@ -60,11 +66,12 @@ export default {
     doaction () {
       if (this.action === 'download') {
         window.electron.downloadupdate()
-      } else if (this.action === 'quitandinstall') {
+      } else if (this.action === 'quit and install') {
         window.electron.quitandinstallupdate()
       }
 
       this.action = ''
+      this.actiontext = ''
     }
   }
 }
