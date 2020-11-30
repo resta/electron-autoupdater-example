@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'DeckReg';
+  src: url('../assets/fonts/Deck-Reg.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font: 'DeckReg';
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+.hack {
+  font-family: $font;
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: $font;
+  }
+
+  blockquote, pre {
+    font-family: $font;
+  }
+}
