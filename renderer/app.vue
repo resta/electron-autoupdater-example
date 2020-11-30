@@ -24,6 +24,10 @@ export default {
 
     this.app.name = name
     this.app.version = version
+
+    window.electron.onmessage()
+      .then(msg => console.log(msg))
+      .catch(err => console.error(err.message))
   }
 }
 </script>

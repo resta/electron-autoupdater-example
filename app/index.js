@@ -17,7 +17,7 @@ if (!is.development) {
   // const FOUR_HOURS = 1000 * 60 * 60 * 4;
   // setInterval(() => autoUpdater.checkForUpdates(), FOUR_HOURS)
 
-  autoUpdater.checkForUpdates()
+  autoUpdater.checkForUpdatesAndNotify()
 }
 
 let mainwindow
@@ -36,7 +36,17 @@ const createmainwindow = async () => {
     }
   })
 
-  win.on('ready-to-show', () => win.show())
+  const sendstatustowindow = text => {
+    console.log(text)
+
+    win.webContents.send('message', text)
+  }
+
+  win.on('ready-to-show', () => {
+    win.show()
+
+    sendstatustowindow('window shown')
+  })
 
   win.on('closed', () => {
     mainwindow = undefined
@@ -52,6 +62,33 @@ const createmainwindow = async () => {
   } else {
     await win.loadFile(path.join(__dirname, 'renderer/index.html'))
   }
+
+  // auto-updater
+
+  autoUpdater.on('checking-for-update', () => {
+    sendstatustowindow('checking for update...')
+  })
+  autoUpdater.on('update-available', info => {
+    console.log(info)
+
+    sendstatustowindow('update available')
+  })
+  autoUpdater.on('update-not-available', info => {
+    console.log(info)
+
+    sendstatustowindow('update not available')
+  })
+  autoUpdater.on('error', err => {
+    sendstatustowindow('update errored: ' + err)
+  })
+  autoUpdater.on('download-progress', progress => {
+    sendstatustowindow(`download speed: ${progress.bytesPerSecond} - downloaded ${progress.precent}% (${progress.transfered}/${progress.total})`)
+  })
+  autoUpdater.on('update-downloaded', info => {
+    console.log(info)
+
+    sendstatustowindow('update downloaded')
+  })
 
   return win
 }
