@@ -4,10 +4,8 @@ contextBridge.exposeInMainWorld(
   'electron',
   {
     getappinfo: () => ipc.invoke('getappinfo'),
-    onmessage: () => new Promise((resolve, reject) => {
-      ipc.on('message', (e, text) => {
-        resolve(text)
-      })
+    onmessage: cb => ipc.on('message', (e, text) => {
+      cb(text)
     })
   }
 )
