@@ -7,6 +7,7 @@
     <div>
       vestion: <code>{{ app.version }}</code>
     </div>
+    <br>
     <div>
       <a v-if="!status" href="#" @click.prevent="checkforupdates()">check for updates</a>
       <span v-else>{{ status }}</span>
